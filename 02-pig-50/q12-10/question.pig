@@ -33,3 +33,14 @@ u = LOAD 'data.csv' USING PigStorage(',')
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+u = LOAD 'data.csv' USING PigStorage(',') AS (id:int, firstname:CHARARRAY, surname:CHARARRAY, birthday:CHARARRAY, color:CHARARRAY,quantity:INT);
+x = FOREACH u GENERATE surname as name;
+y = FILTER x BY ($0 MATCHES '.*D.*' 
+                 OR $0 MATCHES '.*E.*' 
+                 OR $0 MATCHES '.*F.*'
+                 OR $0 MATCHES '.*G.*'
+                 OR $0 MATCHES '.*H.*'
+                 OR $0 MATCHES '.*I.*'
+                 OR $0 MATCHES '.*J.*'
+                 OR $0 MATCHES '.*K.*');
+STORE y INTO './output' using PigStorage(',');

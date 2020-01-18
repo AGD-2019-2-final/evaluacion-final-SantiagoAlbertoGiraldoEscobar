@@ -27,3 +27,20 @@ u = LOAD 'data.csv' USING PigStorage(',')
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+-- u = LOAD 'data.csv' USING PigStorage(',') AS (id:int, firstname:CHARARRAY, surname:CHARARRAY, birthday:CHARARRAY, color:CHARARRAY,quantity:INT);
+-- x = FOREACH u GENERATE firstname as name;
+-- y = FOREACH x GENERATE name as name, SIZE(name) as calc;
+-- w = ORDER y BY calc DESC, name;
+-- STORE w INTO './output' using PigStorage(',');
+
+datos = LOAD 'data.csv' USING PigStorage(',') 
+    AS (id:int, 
+        firstname:CHARARRAY, 
+        surname:CHARARRAY, 
+        birthday:CHARARRAY, 
+        color:CHARARRAY, 
+        quantity:INT);
+
+datos = FOREACH datos GENERATE firstname as firstname;
+datos1 = FILTER datos BY (firstname matches '[M-Z].*');
+STORE datos1 INTO './output' using PigStorage(',');

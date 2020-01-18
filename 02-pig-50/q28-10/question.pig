@@ -29,4 +29,7 @@ u = LOAD 'data.csv' USING PigStorage(',')
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
-
+u = LOAD 'data.csv' USING PigStorage(',') AS (id:int, firstname:CHARARRAY, surname:CHARARRAY, birthday:CHARARRAY, color:CHARARRAY,quantity:INT);
+x = FOREACH u GENERATE birthday as date;
+y = FOREACH x GENERATE CONCAT(SUBSTRING($0,0,4),',',SUBSTRING($0,2,4));
+STORE y INTO './output' using PigStorage(',');

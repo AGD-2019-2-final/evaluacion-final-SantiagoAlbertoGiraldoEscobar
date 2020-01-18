@@ -40,3 +40,35 @@ u = LOAD 'data.csv' USING PigStorage(',')
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+datos = LOAD 'data.csv' USING PigStorage(',') AS (id:int, firstname:CHARARRAY, surname:CHARARRAY, birthday:CHARARRAY, color:CHARARRAY,quantity:INT);
+-- x = FOREACH u GENERATE birthday as datestr;
+-- y = FOREACH x GENERATE ToDate(datestr, 'yyyy-MM-dd') as dated;
+-- z = FOREACH y GENERATE ToString($0, 'yyyy-MMM-dd') as mes;
+-- w = FOREACH z GENERATE LOWER(SUBSTRING($0,5,8)) as mesl;
+-- b = FOREACH x GENERATE SUBSTRING(date,5,7) as mess;
+-- c = FOREACH y GENERATE GetMonth($0) as mesn;
+-- STORE d INTO './output' using PigStorage(',');
+
+datos = FOREACH datos GENERATE birthday as birthday;
+
+datos1 = FOREACH datos GENERATE birthday as columna1, 
+SUBSTRING(birthday,5,7) as columna2,
+SUBSTRING(birthday,5,7) as columna3,
+SUBSTRING(birthday,5,7) as columna4;
+
+datosA = FOREACH datos1 GENERATE columna1, columna2, REPLACE(columna3, '01', 'ene') AS columna3, columna4;
+datosA = FOREACH datosA GENERATE columna1, columna2,REPLACE(columna3, '02', 'feb') AS columna3, columna4;
+datosA = FOREACH datosA GENERATE columna1, columna2, REPLACE(columna3, '03', 'mar') AS columna3, columna4;
+datosA = FOREACH datosA GENERATE columna1, columna2, REPLACE(columna3, '04', 'abr') AS columna3, columna4;
+datosA = FOREACH datosA GENERATE columna1, columna2, REPLACE(columna3, '05', 'may') AS columna3, columna4;
+datosA = FOREACH datosA GENERATE columna1, columna2, REPLACE(columna3, '06', 'jun') AS columna3, columna4;
+datosA = FOREACH datosA GENERATE columna1, columna2, REPLACE(columna3, '07', 'jul') AS columna3, columna4;
+datosA = FOREACH datosA GENERATE columna1, columna2, REPLACE(columna3, '08', 'ago') AS columna3, columna4;
+datosA = FOREACH datosA GENERATE columna1, columna2, REPLACE(columna3, '09', 'sep') AS columna3, columna4;
+datosA = FOREACH datosA GENERATE columna1, columna2, REPLACE(columna3, '10', 'oct') AS columna3, columna4;
+datosA = FOREACH datosA GENERATE columna1, columna2, REPLACE(columna3, '11', 'nov') AS columna3, columna4;
+datosA = FOREACH datosA GENERATE columna1, REPLACE(columna3, '12', 'dic') AS columna3, columna2, (int) columna4;
+
+
+
+STORE datosA INTO './output' using PigStorage(',');
